@@ -1,1 +1,3 @@
-# flutter_hello_world
+# Flutter Hello World
+
+This is a sample repo for flutter google starting codelab.
