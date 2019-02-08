@@ -7,17 +7,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        theme: ThemeData(
+          primaryColor: Colors.red[100],
+        ),
         home: Scaffold(
-          drawer: Drawer(),
           body: RandomWords(),
-      ));
+        ));
   }
 }
 
 class RandomWords extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return RandomWordsState();
   }
 }
@@ -30,12 +31,30 @@ class RandomWordsState extends State<RandomWords> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      drawer: Drawer(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("User Suggestions"),
+          ),
+          body: Column(
+            children: <Widget>[
+              MaterialButton(
+                onPressed: () {
+                  _pushSaved();
+                },
+                child: Text("Show Favourites"),
+              )
+            ],
+          ),
+        ),
+      ),
       appBar: new AppBar(
         title: new Text('Startup Name Generator'),
         actions: <Widget>[
           // Add 3 lines from here...
-          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved),
-        ], // ... to here.
+          new IconButton(
+              icon: const Icon(Icons.favorite), onPressed: _pushSaved),
+        ],
       ),
       body: _buildSuggestions(),
     );
@@ -61,12 +80,11 @@ class RandomWordsState extends State<RandomWords> {
           ).toList();
 
           return new Scaffold(
-            // Add 6 lines from here...
             appBar: new AppBar(
               title: const Text('Saved Suggestions'),
             ),
             body: new ListView(children: divided),
-          ); // ... to here.
+          );
         },
       ),
     );
@@ -96,17 +114,17 @@ class RandomWordsState extends State<RandomWords> {
         style: _biggerFont,
       ),
       leading: new CircleAvatar(
-//        backgroundImage: FadeInImage.assetNetwork(placeholder: null, image: null).network(""),
         backgroundColor: Colors.cyan,
-        child: Text(pair.asString.toUpperCase().substring(0, 1)),
+        child: Text(
+          pair.asString.toUpperCase().substring(0, 1),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
       ),
       trailing: new Icon(
-        // Add the lines from here...
         alreadySaved ? Icons.favorite : Icons.favorite_border,
         color: alreadySaved ? Colors.red : null,
       ),
       onTap: () {
-        // Add 9 lines from here...
         setState(() {
           if (alreadySaved) {
             _saved.remove(pair);
@@ -118,6 +136,7 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
 
+  // old, one widget center of the screen
   Center _buildSuggestion(WordPair wordPair) {
     return Center(
       child: Text(
